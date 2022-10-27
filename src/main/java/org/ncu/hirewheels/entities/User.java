@@ -30,7 +30,7 @@ public class User {
 	@ManyToOne
 	private Role role;
 	
-	@Column(name="wallet_money",columnDefinition="default 10000.00")
+	@Column(name="wallet_money",columnDefinition="DECIMAL(10,2) default 100000.00")
 	private double walletMoney;
 	
 	@OneToMany(mappedBy="user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
@@ -41,14 +41,12 @@ public class User {
 	}
 
 	public User(@NotNull String firstName, String lastName, @NotNull @Min(5) String password,
-			@NotNull @Email String emailID, @Pattern(regexp = "(^$|[0-9]{10})") String mobileNumber,
-			double walletMoney) {
+			@NotNull @Email String emailID, @Pattern(regexp = "(^$|[0-9]{10})") String mobileNumber) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
 		this.emailID = emailID;
 		this.mobileNumber = mobileNumber;
-		this.walletMoney = walletMoney;
 	}
 	
 	// last name can be null

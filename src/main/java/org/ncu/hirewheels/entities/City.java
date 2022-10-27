@@ -4,12 +4,13 @@ import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="city")
 public class City {
 
-	@Id @Column(name="city_id")
+	@Id @Column(name="city_id") @Size(max=10)
 	private long id;
 	
 	@Column(name="city_name",nullable=false) @NotNull
@@ -22,15 +23,14 @@ public class City {
 		
 	}
 	
-	public City(long id,@NotNull String name) {
-		this.id = id;
+	public City(@NotNull String name) {
 		this.name = name;
 	}
 
 	public long getId() {
 		return id;
 	}
-
+	
 	public void setId(long id) {
 		this.id = id;
 	}

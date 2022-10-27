@@ -1,5 +1,7 @@
 package org.ncu.hirewheels.entities;
 
+import java.util.Set;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -15,7 +17,7 @@ public class VehicleCategory {
 	private String name;
 	
 	@OneToMany(mappedBy="category",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private VehicleSubCategory subCategory;
+	private Set<VehicleSubCategory> subCategory;
 	
 	public VehicleCategory() {
 		
@@ -28,7 +30,7 @@ public class VehicleCategory {
 	public long getId() {
 		return id;
 	}
-
+	
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -41,11 +43,11 @@ public class VehicleCategory {
 		this.name = name;
 	}
 
-	public VehicleSubCategory getSubCategory() {
+	public Set<VehicleSubCategory> getSubCategory() {
 		return subCategory;
 	}
 
-	public void setSubCategory(VehicleSubCategory subCategory) {
+	public void setSubCategory(Set<VehicleSubCategory> subCategory) {
 		this.subCategory = subCategory;
 	}
 

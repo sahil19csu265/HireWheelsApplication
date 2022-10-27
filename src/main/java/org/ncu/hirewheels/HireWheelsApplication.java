@@ -8,6 +8,7 @@ public class HireWheelsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HireWheelsApplication.class, args);
+		
 	}
 
 }
