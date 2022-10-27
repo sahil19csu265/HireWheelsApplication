@@ -1,0 +1,144 @@
+package org.ncu.hirewheels.entities;
+
+import java.util.Set;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
+@Entity
+@Table(name="users")
+public class User {
+	
+	@Id @Column(name="user_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Size(max=10)
+	private long id;
+	
+	@Column(name="first_name",nullable=false) @NotNull
+	private String firstName;
+	
+	@Column(name="last_name")
+	private String lastName;
+	
+	@Column(name="password",nullable=false) @NotNull @Min(value = 5)
+	private String password;
+	
+	@Column(name="email",nullable=false,unique=true) @NotNull @Email
+	private String emailID;
+	
+	@Column(name="mobile_no",nullable=false,unique=true) @Pattern(regexp="(^$|[0-9]{10})")
+	private String mobileNumber;
+	
+	@ManyToOne
+	private Role role;
+	
+	@Column(name="wallet_money",columnDefinition="default 10000.00")
+	private double walletMoney;
+	
+	@OneToMany(mappedBy="user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	private Set<Booking> bookings;
+	
+	public User() {
+		
+	}
+
+	public User(@NotNull String firstName, String lastName, @NotNull @Min(5) String password,
+			@NotNull @Email String emailID, @Pattern(regexp = "(^$|[0-9]{10})") String mobileNumber,
+			double walletMoney) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+		this.emailID = emailID;
+		this.mobileNumber = mobileNumber;
+		this.walletMoney = walletMoney;
+	}
+	
+	// last name can be null
+	public User(@NotNull String firstName, @NotNull @Min(5) String password, @NotNull @Email String emailID,
+			@Pattern(regexp = "(^$|[0-9]{10})") String mobileNumber, Role role, double walletMoney) {
+		this.firstName = firstName;
+		this.password = password;
+		this.emailID = emailID;
+		this.mobileNumber = mobileNumber;
+		this.role = role;
+		this.walletMoney = walletMoney;
+	}
+
+	public long getId() {
+		return id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmailID() {
+		return emailID;
+	}
+
+	public void setEmailID(String emailID) {
+		this.emailID = emailID;
+	}
+
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public double getWalletMoney() {
+		return walletMoney;
+	}
+
+	public void setWalletMoney(double walletMoney) {
+		this.walletMoney = walletMoney;
+	}
+
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(Set<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password
+				+ ", emailID=" + emailID + ", mobileNumber=" + mobileNumber + ", role=" + role + ", walletMoney="
+				+ walletMoney + ", bookings=" + bookings + "]";
+	}
+	
+}
