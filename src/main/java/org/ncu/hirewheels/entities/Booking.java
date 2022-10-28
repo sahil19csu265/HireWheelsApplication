@@ -8,6 +8,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+
 @Entity
 @Table(name="booking")
 public class Booking {
@@ -28,12 +30,15 @@ public class Booking {
 	private double amount;
 	
 	@ManyToOne
+	@JsonIdentityReference(alwaysAsId = true)
 	private Location location;
 	
 	@ManyToOne
+	@JsonIdentityReference(alwaysAsId = true)
 	private Vehicle vehicle;
 	
 	@ManyToOne 
+	@JsonIdentityReference(alwaysAsId = true)
 	private User user;
 
 	public Booking(@NotNull Date pickUpDate, @NotNull Date dropOffDate, @NotNull Date bookingDate,

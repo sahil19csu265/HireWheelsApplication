@@ -12,7 +12,7 @@ public interface UserDAO extends JpaRepository<User,Long>{
 	User findByFirstName(String firstName);
 	
 	@Query("SELECT u FROM User u WHERE LOWER(u.firstName) = LOWER(?1) OR "
-			+ "LOWER(u.lastName) = LOWER(?1)")
+			+ "LOWER(u.lastName) = LOWER(?2)")
 	User findByFirstOrLastName(String firstName,String lastName);
 
 	@Query("SELECT u FROM User u WHERE LOWER(u.emailID) = LOWER(?1)")

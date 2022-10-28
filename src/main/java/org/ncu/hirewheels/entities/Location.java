@@ -10,8 +10,12 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name="location")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",scope=Location.class)
 public class Location {
 
 	@Id @Column(name="location_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Range(max=10)
@@ -52,6 +56,10 @@ public class Location {
 
 	public long getId() {
 		return id;
+	}
+	
+	public String getGeneratedId() {
+		return Long.toString(id);
 	}
 	
 	public void setId(long id) {

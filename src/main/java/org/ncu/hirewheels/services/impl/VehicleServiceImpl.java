@@ -10,7 +10,9 @@ import org.ncu.hirewheels.entities.Vehicle;
 import org.ncu.hirewheels.entities.VehicleSubCategory;
 import org.ncu.hirewheels.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class VehicleServiceImpl implements VehicleService{
 
 	@Autowired

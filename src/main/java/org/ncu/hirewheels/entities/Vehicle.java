@@ -6,17 +6,21 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.Range;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="vehicle")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",scope=Vehicle.class)
 public class Vehicle {
 
-	@Id @Column(name="vehicle_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Range(max=10)
+	@Id @Column(name="vehicle_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Range(max=100)
 	private long id;
 	
 	@Column(name="vehicle_model",nullable=false) @NotNull
@@ -25,19 +29,25 @@ public class Vehicle {
 	@Column(name="vehicle_number",nullable=false) @NotNull
 	private String number;
 	
-	@ManyToOne
-	private VehicleSubCategory subcategory;
-	
 	@Column(name="color",nullable=false) @NotNull
 	private String color;
 	
 	@ManyToOne
-	private Location location;
+	@JoinColumn(name="subcategory_id")
+	@JsonIdentityReference(alwaysAsId = true)
+	private VehicleSubCategory subcategory;
 	
 	@ManyToOne
+	@JoinColumn(name="location_id")
+	@JsonIdentityReference(alwaysAsId = true)
+	private Location location;
+	
+	@ManyToOne()
+	@JoinColumn(name="fueltype_id")
+	@JsonIdentityReference(alwaysAsId = true)
 	private FuelType fuelType;
 	
-	@Column(name="avaibility_status",nullable=false,columnDefinition="NUMERIC(1) default 1") @NotNull @Min(value=0) @Max(value=1)
+	@Column(name="avaibility_status",nullable=false,columnDefinition="NUMERIC(1) default 1") @NotNull @Min(value=0) @Max(value=2)
 	private int availabilityStatus;
 	
 	@Column(name="vehicle_image_url",nullable=false) @NotNull
@@ -52,6 +62,16 @@ public class Vehicle {
 	
 	public Vehicle(long id) {
 		this.id = id;
+	}
+
+	public Vehicle(@NotNull String model, @NotNull String number, @NotNull String color,
+			@NotNull @Min(0) @Max(1) int availabilityStatus, @NotNull String imageURL, Set<Booking> bookings) {
+		this.model = model;
+		this.number = number;
+		this.color = color;
+		this.availabilityStatus = availabilityStatus;
+		this.imageURL = imageURL;
+		this.bookings = bookings;
 	}
 
 	public Vehicle(@NotNull String model, @NotNull String number, VehicleSubCategory subcategory, @NotNull String color,

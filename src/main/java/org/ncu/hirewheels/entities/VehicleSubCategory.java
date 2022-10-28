@@ -9,8 +9,12 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Range;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name="vehicle_subcategory")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",scope=VehicleSubCategory.class)
 public class VehicleSubCategory {
 
 	@Id @Column(name="vehicle_subcategory_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Range(max=10)

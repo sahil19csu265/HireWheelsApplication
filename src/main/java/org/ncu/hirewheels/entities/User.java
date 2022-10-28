@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id",scope=User.class)
 public class User {
 	
 	@Id @Column(name="user_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Range(max=10)
@@ -34,7 +35,7 @@ public class User {
 	private String mobileNumber;
 	
 	@ManyToOne()
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+	@JoinColumn(name="role_id")
 	@JsonIdentityReference(alwaysAsId = true)
 	private Role role;
 	
