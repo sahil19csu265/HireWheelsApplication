@@ -1,26 +1,33 @@
 package org.ncu.hirewheels.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Range;
+
 @Entity
 @Table(name="fuel_type")
 public class FuelType {
 
-	@Id @Column(name="fuel_type_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Size(max=10)
+	@Id @Column(name="fuel_type_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Range(max=10)
 	private long id;
 	
 	@Column(name="fuel_type",nullable=false,unique=true) @NotNull
 	private String type;
 	
 	@OneToMany(mappedBy="fuelType",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private Set<Vehicle> vehicles;
+	private Set<Vehicle> vehicles = new HashSet<>();
 	
 	public FuelType() {
 		
+	}
+	
+	public FuelType(long id) {
+		this.id = id;
 	}
 
 	public FuelType(@NotNull String type) {

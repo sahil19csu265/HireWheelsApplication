@@ -1,18 +1,22 @@
 package org.ncu.hirewheels.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Range;
+
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="vehicle")
 public class Vehicle {
 
-	@Id @Column(name="vehicle_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Size(max=10)
+	@Id @Column(name="vehicle_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Range(max=10)
 	private long id;
 	
 	@Column(name="vehicle_model",nullable=false) @NotNull
@@ -33,17 +37,21 @@ public class Vehicle {
 	@ManyToOne
 	private FuelType fuelType;
 	
-	@Column(name="avaibility_status",nullable=false) @NotNull @Min(value=0) @Max(value=1)
+	@Column(name="avaibility_status",nullable=false,columnDefinition="NUMERIC(1) default 1") @NotNull @Min(value=0) @Max(value=1)
 	private int availabilityStatus;
 	
 	@Column(name="vehicle_image_url",nullable=false) @NotNull
 	private String imageURL;
 	
 	@OneToMany(mappedBy="vehicle",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private Set<Booking> bookings;
+	private Set<Booking> bookings = new HashSet<>();
 	
 	public Vehicle() {
 		
+	}
+	
+	public Vehicle(long id) {
+		this.id = id;
 	}
 
 	public Vehicle(@NotNull String model, @NotNull String number, VehicleSubCategory subcategory, @NotNull String color,

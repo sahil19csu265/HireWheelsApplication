@@ -1,25 +1,32 @@
 package org.ncu.hirewheels.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.Range;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="role")
 public class Role {
 
-	@Id @Column(name="role_id") @Size(max=10)
+	@Id @Column(name="role_id") @Range(max=10)
 	private long id;
 	
 	@Column(name="role_name",nullable=false,unique=true) @NotNull
 	private String name;
 	
 	@OneToMany(mappedBy="role",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private Set<User> users;
+	private Set<User> users = new HashSet<>();
 	
 	public Role() {
 		
+	}
+	
+	public Role(long id) {
+		this.id = id;
 	}
 	
 	public Role(String name) {
@@ -52,7 +59,7 @@ public class Role {
 
 	@Override
 	public String toString() {
-		return "Role [id=" + id + ", name=" + name + ", users=" + users + "]";
+		return "Role [id=" + id + ", name=" + name +" ]";
 	}
 	
 }

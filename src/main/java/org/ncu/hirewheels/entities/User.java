@@ -1,15 +1,21 @@
 package org.ncu.hirewheels.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import org.hibernate.validator.constraints.Range;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name="users")
 public class User {
 	
-	@Id @Column(name="user_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Size(max=10)
+	@Id @Column(name="user_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Range(max=10)
 	private long id;
 	
 	@Column(name="first_name",nullable=false) @NotNull
@@ -18,7 +24,7 @@ public class User {
 	@Column(name="last_name")
 	private String lastName;
 	
-	@Column(name="password",nullable=false) @NotNull @Min(value = 5)
+	@Column(name="password",nullable=false) @NotNull @Size(min=5)
 	private String password;
 	
 	@Column(name="email",nullable=false,unique=true) @NotNull @Email
@@ -27,32 +33,25 @@ public class User {
 	@Column(name="mobile_no",nullable=false,unique=true) @Pattern(regexp="(^$|[0-9]{10})")
 	private String mobileNumber;
 	
-	@ManyToOne
+	@ManyToOne()
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
+	@JsonIdentityReference(alwaysAsId = true)
 	private Role role;
 	
 	@Column(name="wallet_money",columnDefinition="DECIMAL(10,2) default 100000.00")
 	private double walletMoney;
 	
 	@OneToMany(mappedBy="user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private Set<Booking> bookings;
+	private Set<Booking> bookings = new HashSet<>();
 	
 	public User() {
 		
 	}
-
-	public User(@NotNull String firstName, String lastName, @NotNull @Min(5) String password,
-			@NotNull @Email String emailID, @Pattern(regexp = "(^$|[0-9]{10})") String mobileNumber) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.password = password;
-		this.emailID = emailID;
-		this.mobileNumber = mobileNumber;
-	}
 	
-	// last name can be null
-	public User(@NotNull String firstName, @NotNull @Min(5) String password, @NotNull @Email String emailID,
+	public User(@NotNull String firstName, String lastName, @NotNull @Min(5) String password, @NotNull @Email String emailID,
 			@Pattern(regexp = "(^$|[0-9]{10})") String mobileNumber, Role role, double walletMoney) {
 		this.firstName = firstName;
+		this.lastName = lastName;
 		this.password = password;
 		this.emailID = emailID;
 		this.mobileNumber = mobileNumber;
@@ -135,7 +134,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password
-				+ ", emailID=" + emailID + ", mobileNumber=" + mobileNumber + ", role=" + role + ", walletMoney="
+				+ ", emailID=" + emailID + ", mobileNumber=" + mobileNumber + ", roleId =" + role.getId() + ", walletMoney="
 				+ walletMoney + ", bookings=" + bookings + "]";
 	}
 	

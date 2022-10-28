@@ -6,17 +6,19 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Range;
+
 @Entity
 @Table(name="booking")
 public class Booking {
 
-	@Id @Column(name="booking_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Size(max=10)
+	@Id @Column(name="booking_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Range(max=10)
 	private long id;
 	
-	@Column(name="pickup_date",nullable=false) @NotNull @Temporal(TemporalType.DATE)
+	@Column(name="pickup_date",nullable=false) @NotNull @Temporal(TemporalType.TIMESTAMP)
 	private Date pickUpDate;
 	
-	@Column(name="dropoff_date",nullable=false) @NotNull @Temporal(TemporalType.DATE)
+	@Column(name="dropoff_date",nullable=false) @NotNull @Temporal(TemporalType.TIMESTAMP)
 	private Date dropOffDate;
 	
 	@Column(name="booking_date",nullable=false) @NotNull @Temporal(TemporalType.DATE)

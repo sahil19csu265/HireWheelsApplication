@@ -1,16 +1,19 @@
 package org.ncu.hirewheels.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Range;
+
 @Entity
 @Table(name="vehicle_subcategory")
 public class VehicleSubCategory {
 
-	@Id @Column(name="vehicle_subcategory_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Size(max=10)
+	@Id @Column(name="vehicle_subcategory_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Range(max=10)
 	private long id;
 	
 	@Column(name="vehicle_subcategory_name",nullable=false,unique=true) @NotNull
@@ -20,13 +23,17 @@ public class VehicleSubCategory {
 	private double pricePerDay;
 	
 	@OneToMany(mappedBy="subcategory",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private Set<Vehicle> vehicles;
+	private Set<Vehicle> vehicles = new HashSet<>();
 	
 	@ManyToOne
 	private VehicleCategory category;
 	
 	public VehicleSubCategory() {
 		
+	}
+	
+	public VehicleSubCategory(long id) {
+		this.id = id;
 	}
 	
 	public VehicleSubCategory(@NotNull String name, @NotNull double pricePerDay) {

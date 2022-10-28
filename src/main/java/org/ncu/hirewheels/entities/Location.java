@@ -1,5 +1,6 @@
 package org.ncu.hirewheels.entities;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -7,11 +8,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Range;
+
 @Entity
 @Table(name="location")
 public class Location {
 
-	@Id @Column(name="location_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Size(max=10)
+	@Id @Column(name="location_id") @GeneratedValue(strategy=GenerationType.IDENTITY) @Range(max=10)
 	private long id;
 	
 	@Column(name="location_name",nullable=false) @NotNull
@@ -27,13 +30,17 @@ public class Location {
 	private String pincode;
 	
 	@OneToMany(mappedBy="location",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private Set<Vehicle> vehicles;
+	private Set<Vehicle> vehicles = new HashSet<>();
 	
 	@OneToMany(mappedBy="location",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private Set<Booking> bookings;
+	private Set<Booking> bookings = new HashSet<>();
 	
 	public Location() {
 		
+	}
+	
+	public Location(long id) {
+		this.id = id;
 	}
 
 	public Location(@NotNull String name, @NotNull String address,
